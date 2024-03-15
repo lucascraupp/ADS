@@ -1,3 +1,4 @@
+import csv
 import os
 import subprocess
 
@@ -16,7 +17,7 @@ def run_imunes():
     if not os.path.exists(IMUNES_PATH) and not IMUNES_PATH.endswith(".imn"):
         raise FileNotFoundError("arquivo IMUNES não encontrado!")
     else:
-        print("Running simulation...")
+        print("Rodando a simulação...")
 
         cmd = f"sudo imunes -b -e {EXPERIMENT_ID} {IMUNES_PATH}"
 
@@ -24,15 +25,30 @@ def run_imunes():
 
 
 def run_experiment():
-    # Configuração do background (UDP)
-    cmd_iperf_server_udp = f"sudo himage pc3@{EXPERIMENT_ID} iperf -s -u"
-    cmd_iperf_client_udp = f"sudo himage pc4@{EXPERIMENT_ID} iperf -c {IP['pc4']} -u -t {EXECUTION_TIME} -b {UDP_BANDWIDTH}"
+    cmd_iperf_server_tcp = f"sudo himage pc2@{EXPERIMENT_ID} iperf -s &"
+
+    cmd_iperf_server_udp = f"sudo himage pc4@{EXPERIMENT_ID} iperf -s -u &"
+    cmd_iperf_client_udp = f"sudo himage pc3@{EXPERIMENT_ID} iperf -c {IP['pc4']} -u -t {EXECUTION_TIME} -b {UDP_BANDWIDTH} &"
+
+    subprocess.run(cmd_iperf_server_udp, shell=True)
+    subprocess.run(cmd_iperf_server_tcp, shell=True)
+    subprocess.run(cmd_iperf_client_udp, shell=True)
 
     for rep in range(REPETITION):
         for proto in ALG:
             for ber in BER:
                 for e2e in E2E_DELAY:
-                    print("@TODO")
+                    cmd_iperf_echo = f"echo -n {rep},{proto},{ber},{e2e},{UDP_BANDWIDTH}, >> dados.csv"
+                    subprocess.run(cmd_iperf_echo, shell=True)
+
+                    cmd_iperf_vlink_and_delay = f"sudo vlink -BER {ber} -d {e2e} router1:router2@ {EXPERIMENT_ID} >> dados.csv"
+                    subprocess.run(cmd_iperf_vlink_and_delay, shell=True)
+
+                    cmd_iperf_client_tcp = f"sudo himage pc1@{EXPERIMENT_ID} iperf -c {IP['pc2']} -y C -Z {proto} >> dados.csv"
+                    subprocess.run(cmd_iperf_client_tcp, shell=True)
+
+    subprocess.Popen(["cleanupAll"]).wait()
 
 
 run_imunes()
+run_experiment()
