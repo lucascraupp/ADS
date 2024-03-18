@@ -68,7 +68,7 @@ def run_experiment():
                     subprocess.run(cmd_iperf_echo, shell=True)
 
                     cmd_iperf_vlink_and_delay = f"sudo vlink -BER {ber} -d {e2e} router1:router2@ {EXPERIMENT_ID} >> {CSV_PATH}"
-                    subprocess.Popen(cmd_iperf_vlink_and_delay, shell=True).wait()
+                    subprocess.run(cmd_iperf_vlink_and_delay, shell=True)
 
                     cmd_iperf_client_tcp = f"sudo himage pc1@{EXPERIMENT_ID} iperf -c {IP['pc2']} -y C -Z {proto} >> {CSV_PATH}"
                     subprocess.run(cmd_iperf_client_tcp, shell=True)
