@@ -295,7 +295,7 @@ A simulação que apresentou a melhor taxa de transmissão foi a representada pe
 - Protocolo: Cubic
 - BER: 1/1e6
 - Retardo nos links: 10 ms
-- Taxa média de transmissão: 1,77 Mbps
+- Taxa média de transmissão: 1.77 Mbps
 
 A simulação que apresentou a pior taxa de transmissão foi a representada pelo primeiro gráfico. Com os seguintes dados:
 - Protocolo: Reno
