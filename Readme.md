@@ -1,5 +1,19 @@
 # Avaliação de Desempenho do Protocolo TCP em condições de congestionamento: cubic x reno
 
+## Índice
+
+  - [Alunos](Readme.md#alunos)
+  - [Objetivo](Readme.md#objetivo)
+  - [Métricas](Readme.md#métricas)
+  - [Parâmetros fixados](Readme.md#parâmetros-fixados)
+  - [Fatores e níveis](Readme.md#fatores-e-níveis)
+  - [Técnicas usadas para avaliação](Readme.md#técnicas-usadas-para-avaliação)
+  - [Amostra dos dados obtidos](Readme.md#amostra-dos-dados-obtidos)
+  - [Plotagem dos gráficos](Readme.md#plotagem-dos-gráficos)
+  - [Análise dos resultados](Readme.md#análise-dos-resultados)
+    - [Tabela Cubic x Reno](Readme.md#tabela-cubic-x-reno)
+    - [Conclusões](Readme.md#conclusões)
+
 ## Alunos
 
 <a href="https://github.com/lucascraupp">
